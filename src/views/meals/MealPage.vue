@@ -1,8 +1,9 @@
 <template>
   <div class="meal-page">
-    <top-bar username="company"/>
+    <div v-if="this.isAuthenticated()">
+    <top-bar :username="this.StateUsername()"/>
     <section-header-component
-    :name="meal.type + ' '+ meal.day"
+    :name="response_data.meal.type + ' '+ response_data.meal.day"
     description="Choose your meal"
     back_page="/mealsdashboard"
     />
@@ -11,27 +12,27 @@
   </div>
 
   <div class="list">
-    <blockquote v-if="error" class="create-error">
-      {{ error }}
+    <blockquote v-if="response_data.error" class="create-error">
+      {{ response_data.error }}
     </blockquote>
     <div v-else>
 
-    <form id="dish_form" class="col s12" method="post">
-      <div v-if="max_dish_quantity" class="sub_section-title left-align" style="margin-bottom: 20px;">
-        Number of Dishes Available: {{ max_dish_quantity }}
+    <form id="dish_form" class="col s12" @submit="sendQuantities">
+      <div v-if="response_data.max_dish_quantity" class="sub_section-title left-align" style="margin-bottom: 20px;">
+        Number of Dishes Available: {{ response_data.max_dish_quantity }}
       </div>
-      <table style="width:95%;margin-left:auto;margin-right:auto" v-for="dish_type in dish_types" :key="dish_type.name" class="striped" :id="'table_'+dish_type.name">
+      <table style="width:95%;margin-left:auto;margin-right:auto" v-for="dish_type in response_data.dish_types" :key="dish_type" class="striped" :id="'table_'+dish_type">
         <thead>
           <tr>
-            <th style="width:30%" v-if="dish_type.name=='Main Course'">Main Course</th>
-            <th style="width:30%" v-else>{{ dish_type.name }}</th>
+            <th style="width:30%" v-if="dish_type=='MainCourse'">Main Course</th>
+            <th style="width:30%" v-else>{{ dish_type }}</th>
             <th style="width:50%">Description</th>
             <th>Quantity</th>
           </tr>
         </thead>
         <tbody>
             <!-- Os dishes devem ser condicionados por dish.type.name == dish_type -->
-          <tr v-for="dish in dish_type.dishes" :key="dish.name">  
+              <tr v-for="dish in response_data.dishes.filter((item) => {return (item.type == dish_type)})" :key="dish.name">  <!-- do a filter--> 
             <td>
               {{ dish.name }}
             </td>
@@ -41,38 +42,59 @@
             </td>
   
             <td>
-              <input :id="'dish_quantity'+ loop_index0" :name="'dish_quantity_'+ dish_type.name " type="number" min="0" :value="20" class="validate s2">
-              <input type="hidden" :name="'dish_' + dish_type.name " value="dish.external_id">
+              <input type="number" min="0" v-model="dish.quantity" class="validate s2">
             </td>
           </tr>
           <br>
           <br>
         </tbody>
       </table>
-      <router-link to="/mealsdashboard">
       <button type="submit" class="waves-effect blue lighten-2 btn add-btn left" ><i class="material-icons left">save</i>Save</button>
-      </router-link>
     </form>
   </div>
     </div>
+    </div>
+    <h2 v-else id="blink" class="error" >
+      ACCESS DENIED
+      <br>
+      <img :src="siren" class="blink">
+  </h2>
 </div>
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
+import axios from "axios";
 export default {
   name: 'meal-page',
   components:{
   },
   data(){
     return{
-      meal:{type:"Lunch",day:"2 de Março de 2023"},
-      error:"",
-      max_dish_quantity:20,
-      dish_types:[{name:'Entry',dishes:[{name:'Soup',description:'Good soup'},{name:'Bread',description:'Good bread'}]},
-      {name:'Main Course',dishes:[{name:'Meat',description:'Good steak'},{name:'Fish',description:'Tasty Salmon'}]}],
-      loop_index0:10,
+      siren:require("../../assets/siren.png"),
+      response_data:{
+        meal:{type:"",day:""},
+        error:"",
+        max_dish_quantity:0,
+        dish_types:[],
+        dishes:[]
+      }
     }
+  },
+  methods:{
+    ...mapGetters(["isAuthenticated"]),
+    ...mapGetters(["StateUsername"]),
+    ...mapGetters(["Company"]),
+    sendQuantities(e){
+      e.preventDefault()
+      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal/change',{meal_external_id: this.$route.params.external_id, company:this.Company(), dishes:this.response_data.dishes})
+      this.$router.push('/mealsdashboard')
+    },
+},
+
+  mounted(){
+    console.log(this.Company())
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal',{meal_external_id: this.$route.params.external_id, company:this.Company()}).then(response=>this.response_data=response.data)
   }
 }
 </script>

@@ -5,11 +5,12 @@
             <p>{{description}}</p>
         </div>
          <router-link v-if="back_page!=''" router-link :to="back_page">
-            <form method="get" class="row s12">
-                <button class="waves-effect waves-light btn back-btn left" style="margin-left:-700px"><i
+            <form method="get">
+                <button class="waves-effect waves-light btn back-btn left" style="margin-left:-45vw"><i
                 class="material-icons left">arrow_back</i>back</button>
             </form>
         </router-link>
+        <br>
     </div>
 </template>
 

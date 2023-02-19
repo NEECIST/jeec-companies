@@ -12,19 +12,17 @@
     <div class="login-card center-align">
         <form method="post">
             <div class="input-field col s12">
-                <input type="text" placeholder="Username" class="username-input" name="username">
+                <input v-model="form.username"  type="text" placeholder="Username" class="username-input" name="username">
             </div>
             
             <div class="input-field col s12">
-                <input type="password" placeholder="Password" class="password-input" name="password">
+                <input v-model="form.password" type="password" placeholder="Password" class="password-input" name="password">
             </div>
 
         
-                <p class="login-error">error msg would appear here</p>
+                <p v-if="showError" class="login-error">error msg would appear here</p>
 
-             <router-link router-link :to="{ name: 'dashboard-main' }">
-               <button type="submit" value="Login" class="waves-effect blue lighten-2 btn-large login-button">Login</button>
-              </router-link>
+               <button @click="submit" class="waves-effect blue lighten-2 btn-large login-button">Login</button>
 
         </form>
     </div>
@@ -34,7 +32,9 @@
 
 <script>
 // @ is an alias to /src
-
+import { mapActions } from "vuex";
+import { mapGetters } from "vuex";
+import axios from "axios"
 export default {
   name: 'companies-login',
   components: {
@@ -43,8 +43,46 @@ export default {
   data(){
     return{
         jeec_logo:require("../assets/jeec_logo_mobile.svg"),
-        brain_logo: require( "../assets/brain.png")
+        brain_logo: require( "../assets/brain.png"),
+        form:{
+          username:"",
+          password:"",
+        },
+        showError:false,
     };
+  },
+  methods:{
+    ...mapActions(["LogIn"]),
+    ...mapGetters(["isAuthenticated"]),
+    ...mapGetters(["StateUsername"]),
+    async CheckTerms(username){
+      await axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/terms_check_vue',{user: username}).then(response => this.check = response.data)
+          if(this.check.accepted_terms){
+            this.$router.push("/dashboard");
+            this.showError = false
+          }
+          else{
+            this.$router.push("/terms_conditions");
+          }
+
+    },
+    async submit(e) {
+      e.preventDefault()
+      try {
+        await this.LogIn(this.form);
+        if(this.isAuthenticated()){
+          this.CheckTerms(this.StateUsername())
+        }
+        else{
+          this.showError = true
+        }
+      } catch (error) {
+        this.showError = true
+      }
+    }
+  },
+  mounted() {
+    
   },
 }
 </script>

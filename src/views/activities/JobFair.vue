@@ -1,5 +1,6 @@
 <template>
   <div class="job-fair">
+  <div v-if="this.isAuthenticated()">
     <top-bar username="company"/>
     <section-header-component
     name="Job Fair"
@@ -18,7 +19,7 @@
         class="large material-icons left">qr_code</i>Generate Code</button>
   </div>
 
-  <center id="info">
+  <div id="info">
     <div style="display: flex; justify-content: space-evenly; flex-wrap: wrap;">
       <div class="evf evf-user">
         <p><b>user:</b> {{user.evf_username }}</p>
@@ -46,24 +47,34 @@
       <button v-for="(job_fair,index) in job_fairs" :key="job_fair" :data-name="index" class="waves-effect lighten-2 btn-large dashboard-btn add-calender-btn"
         style="width: auto;"><i class="large material-icons left">event</i>Add To Calendar - {{ job_fair.day }}</button>
     </div>
-  </center>
+  </div>
+  </div>
+  <h2 v-else id="blink" class="error" >
+      ACCESS DENIED
+      <br>
+      <img :src="siren" class="blink">
+  </h2>
 
   
   </div>
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
 export default {
   name: 'job-fair',
   components: {
   },
   data(){
     return{
+        siren:require("../../assets/siren.png"),
         user:{evf_username:"evf_username",evf_password:"evf_password",company:{evf_username:"company_evf_username",evf_password:"company_evf_password"}},
         job_fairs:[{day:"17 de maio de 2019",zoom_link:"vaiparaocacete.come"},{day:"19 de abril de 2029",zoom_link:"enfim.come"}]
     }
-  }
+  },
+  methods:{
+    ...mapGetters(["isAuthenticated"]),
+  },
 }
 </script>
 

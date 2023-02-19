@@ -7,10 +7,8 @@
 
     <!-- <form action="{{ url_for('companies_api.company_logout') }}" method="get"> -->
     <router-link router-link to="/">
-      <form method="get">
-      <button class="waves-effect red lighten-2 btn-small right logout-btn" ><i class="material-icons left">lock</i>Log
+      <button @click="logout"  class="waves-effect red lighten-2 btn-small right logout-btn" ><i class="material-icons left">lock</i>Log
         out</button>
-    </form>
     </router-link>
 
     <a target="_blank" rel="noopener noreferrer" href="https://jeec.ist" method="get">
@@ -22,6 +20,8 @@
 </template>
 
 <script>
+import router from "../router";
+import { mapActions } from "vuex";
 export default {
   name: 'TopBar',
   props: {
@@ -31,6 +31,13 @@ export default {
     return{
       jeec_logo:require("../assets/jeec_logo_mobile.svg"),
     };
+  },
+  methods:{
+    ...mapActions(["LogOut"]),
+    logout(){
+        router.push('/')
+        this.LogOut()
+    }
   }
 }
 </script>

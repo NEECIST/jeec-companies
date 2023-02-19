@@ -1,6 +1,7 @@
 <template>
   <div class="meals-dashboard">
-    <top-bar username="company"/>
+    <div v-if="this.isAuthenticated()">
+    <top-bar :username="this.StateUsername()"/>
     <section-header-component
     name="Meals"
     description="Choose your meals"
@@ -11,11 +12,11 @@
     </div>
 
   <div class="list">
-    <blockquote v-if="error" class="create-error">
-      {{ error }}
+    <blockquote v-if="response_data.error" class="create-error">
+      {{ response_data.error }}
     </blockquote>
     <div class="counter right">
-      Meals: {{ meals.length }}
+      Meals: {{ response_data.length }}
     </div>
 
     <table class="striped" style="width:95%; margin-left:auto; margin-right:auto">
@@ -29,7 +30,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="meal in meals" :key="meal.name">
+        <tr v-for="meal in response_data.meals" :key="meal.name">
           <td>
             {{ meal.name }}
           </td>
@@ -52,8 +53,8 @@
           </td>
 
           <td>
-            <form method="get">
-              <router-link :class="{ disabled: meal.open_registrations==false }" router-link to="/mealpage">
+            <form>
+              <router-link :class="{ disabled: meal.open_registrations==false }" router-link :to="{ name: 'meal-page', params: {external_id: meal.external_id }}">
               <button title="Choose Dishes" class="waves-effect waves-light btn-floating" :disabled="meal.open_registrations==false"><i
                   class="material-icons left">room_service</i>Choose Dishes</button>
               </router-link>
@@ -63,21 +64,41 @@
       </tbody>
     </table>
   </div>
+  </div>
+  <h2 v-else id="blink" class="error" >
+      ACCESS DENIED
+      <br>
+      <img :src="siren" class="blink">
+  </h2>
 </div>
 </template>
 
 <script>
-
+import { mapGetters } from "vuex";
+import axios from "axios";
 export default {
   name: 'meals-dashboard',
   components: {
   },
   data(){
     return{
-      error:"",
-      meals:[{name:"Comida da boa", day:"6 de Abril", time:"5:33", open_registrations:false},
-      {name:"Comida da gostosa", day:"6 de Maio", time:"17:43", open_registrations:true}],
+      siren:require("../../assets/siren.png"),
+      response_data:{
+        error:"",
+        meals:[],
+        length:0,
+      },
     }
+  },
+  methods:{
+    ...mapGetters(["isAuthenticated"]),
+    ...mapGetters(["StateUsername"]),
+    ...mapGetters(["Company"]),
+  },
+  mounted(){
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard',{company:this.Company()}).then(response => {
+      this.response_data = response.data
+    });
   }
 }
 </script>

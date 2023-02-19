@@ -25,4 +25,34 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.error {
+            font-size: 5em;
+            font-family: serif;
+            color: red;
+            text-align: center;
+        }
+
+.blink {
+  animation: animate 
+                0.5s linear infinite;
+        }
+  
+        @keyframes animate {
+            0% {
+                opacity: 0;
+            }
+  
+            50% {
+                opacity: 0.7;
+            }
+  
+            100% {
+                opacity: 0;
+            }
+}
+
+img.blink{
+  width:60vw
+}
 </style>

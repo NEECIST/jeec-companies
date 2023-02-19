@@ -1,93 +1,128 @@
 <template>
   <div class="activities-dashboard">
-    <top-bar username="company"/>
-    <section-header-component
-    name="Activities"
-    description="Your activities"
-    back_page="/dashboard"
-    />
-     <div class="section-title center-align" style="margin-top:50px;">
-    List of activities
-  </div>
+    <div v-if="this.isAuthenticated()">
+      <top-bar :username="BigData.user_name"/>
+      <section-header-component
+      name="Activities"
+      description="Your activities"
+      back_page="/dashboard"
+      />
+      <div class="section-title center-align" style="margin-top:50px;">
+      List of activities
+      </div>
 
-  <div class="list">
-    <!-- {% if error is not none %} -->
-    <blockquote v-if="error" class="create-error">
-      {{ error }}
-    </blockquote>
-    <!-- {% else %} -->
-    <div class="counter right">
-       Activities: {{ activities.length }}
-    </div>
-
-    <table class="striped" style="width:95%; margin-left:auto; margin-right:auto" >
-      <thead>
-        <tr>
-          <th>Name</th>
-          <th>Type</th>
-          <th>Description</th>
-          <th>Day</th>
-          <th>Time</th>
-          <th>Location</th>
-          <th></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="activity in activities" :key="activity.name">
-          <td><b>{{ activity.name }}</b></td>
-
-          <td>
-            {{ activity.activity_type }}
-          </td>
-
-          <td v-if="activity.description">
-           {{ activity.description }} 
-          </td>
-
-          <td v-if="activity.day">
-            
-            {{ activity.day }}
+      <div class="list">
+        <div v-if="BigData.error">
+          <blockquote  class="create-error">
+            {{ BigData.error }}
+          </blockquote>
+        </div>
+        <div v-else>
+          <div class="counter right">
+            Activities: {{ BigData.activities.length }}
+          </div>
     
-          </td>
-
-          <td v-if="activity.time">
-           
-            {{ activity.time }}
-   
-          </td>
-
-          <td v-if="activity.location">
-            
-            {{ activity.location }}
+          <table class="striped" style="width:95%; margin-left:auto; margin-right:auto" >
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Day</th>
+                <th>Time</th>
+                <th>Location</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="activity in BigData.activities" :key="activity.name">
+                <td><b>{{ activity.name }} </b></td>
+    
+                <td>
+                  {{ activity.activity_type }}
+                </td>
+    
+                <td v-if="activity.description">
+                {{ activity.description }} 
+                </td>
+                <td v-else>
+                  No Description Provided
+                </td>
+    
+                <td v-if="activity.day">
+                  
+                  {{ activity.day }}
+          
+                </td>
+                <td v-else>
+                  No Day Specified
+                </td>
+    
+                <td v-if="activity.time">
+                
+                  {{ activity.time }}
         
-          </td>
-
-          <td>
-            <form method="get">
-              <button title="Activity Info" class="waves-effect waves-light btn-floating"><i
-                  class="material-icons left">search</i>Info</button>
-            </form>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+                </td>
+                <td v-else>
+                  No Time Specified
+                </td>
+    
+                <td v-if="activity.location">
+                  
+                  {{ activity.location }}
+              
+                </td>
+                <td v-else>
+                  No Location Specified
+                </td>
+    
+                <td>
+                  <router-link :to="{name: 'activity-full-detail', params: {activity_external_id : activity.activity_ex_id}}">
+                    <button title="Activity Info" class="waves-effect waves-light btn-floating"><i
+                        class="material-icons left">search</i>Info </button>
+                  </router-link>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      
+      </div>
   </div>
-  </div>
+  <h2 v-else id="blink" class="error" >
+      ACCESS DENIED
+      <br>
+      <img :src="siren" class="blink">
+  </h2>
+</div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import axios from "axios"
 
 export default {
   name: 'activities-dashboard',
   components: {
   },
-  data(){
+  data(){ 
     return{
-      error:"",
-      activities:[{name:"Ver uma cena", activity_type:"Ver", description:"Vão ver uma cena fixe", day:"10",time:"10AM",location:"Torre Norte"},
-      {name:"Testar uma cena", activity_type:"Testar",description:"Vão testar uma cena fixe", day:"12",time:"12AM",location:"Pavilhão Central"}],
+      BigData:{
+        user_name: "",
+        company_name:"",
+        activities:[],
+        error:""
+      },
+      siren:require("../../assets/siren.png"),
     }
-  }
+  },
+  methods:{
+    ...mapGetters(["isAuthenticated"]),
+    ...mapGetters(["StateUsername"]),
+  },
+  mounted() {
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/dashboard_vue/activitiesdashboard_vue',{user: this.StateUsername()}).then(response=>this.BigData=response.data)
+  },
 }
 </script>
 
@@ -111,5 +146,10 @@ export default {
     word-spacing: 10px;
     color: rgb(102, 101, 101);
     margin-right: 40px;
+}
+
+
+img{
+  width: 60%;
 }
 </style>
