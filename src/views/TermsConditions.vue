@@ -117,8 +117,11 @@
         ...mapGetters(["isAuthenticated"]),
         ...mapGetters(["StateUsername"]),
         AcceptTerms(){
-            axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/terms',{user: this.StateUsername()}).then(response =>{ this.BigData = response.data})
-            this.$router.push("/dashboard");
+            axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/terms',{user: this.StateUsername()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response =>{ this.BigData = response.data})
+            this.$router.push("/companies/dashboard");
         }
       },
     

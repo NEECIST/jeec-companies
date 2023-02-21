@@ -5,7 +5,7 @@
       <section-header-component
       name="Activities"
       description="Your activities"
-      back_page="/dashboard"
+      back_page="/companies/dashboard"
       />
       <div class="section-title center-align" style="margin-top:50px;">
       List of activities
@@ -121,7 +121,10 @@ export default {
     ...mapGetters(["StateUsername"]),
   },
   mounted() {
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/dashboard_vue/activitiesdashboard_vue',{user: this.StateUsername()}).then(response=>this.BigData=response.data)
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/dashboard_vue/activitiesdashboard_vue',{user: this.StateUsername()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response=>this.BigData=response.data)
   },
 }
 </script>

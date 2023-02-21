@@ -6,13 +6,8 @@ import TopBar from './components/TopBar'
 import SectionHeader from './components/SectionHeader'
 import 'vue-select/dist/vue-select.css';
 import store from './store';
-import axios from 'axios';
 import VueCryptojs from 'vue-cryptojs'
 import fullscreen from 'vue-fullscreen'
-
-
-
-axios.defaults.withCredentials = false
 
 Vue.use(VueCryptojs)
 Vue.use(fullscreen)

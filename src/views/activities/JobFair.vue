@@ -5,7 +5,7 @@
     <section-header-component
     name="Job Fair"
     description=""
-    back_page="/dashboard"
+    back_page="/companies/dashboard"
     />
     <div class="flexbox-btns" style="justify-content: center;">
     <button id="info_btn" class="waves-effect blue lighten-2 btn-large dashboard-btn" style="width: 250px;"><i

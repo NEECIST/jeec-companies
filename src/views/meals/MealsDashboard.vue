@@ -5,7 +5,7 @@
     <section-header-component
     name="Meals"
     description="Choose your meals"
-    back_page="/dashboard"
+    back_page="/companies/dashboard"
     />
      <div class="section-title center-align" style="margin-top:50px;">
     List of meals
@@ -96,7 +96,10 @@ export default {
     ...mapGetters(["Company"]),
   },
   mounted(){
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard',{company:this.Company()}).then(response => {
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard',{company:this.Company()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response => {
       this.response_data = response.data
     });
   }

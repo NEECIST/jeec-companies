@@ -6,7 +6,7 @@
       <section-header-component
       name="Activity Types Management"
       :description="desc"  
-      back_page='/dashboard'
+      back_page='/companies/dashboard'
       />
 
       
@@ -35,7 +35,7 @@
       <section-header-component
       name="Error"
       :description="BigData.error"
-      back_page="/dashboard"
+      back_page="companies/dashboard"
       />
     </div>
 
@@ -154,7 +154,10 @@ export default {
   },
 
   mounted() {
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/activitiesdashboard_vue/activity_type',{user: this.StateUsername(), activity_type_external_id: this.$route.params.activity_type_external_id}).then(response =>{ this.BigData = response.data,this.desc = "Manage activity types of " + this.BigData.event_name} )
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/activitiesdashboard_vue/activity_type',{user: this.StateUsername(), activity_type_external_id: this.$route.params.activity_type_external_id},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response =>{ this.BigData = response.data,this.desc = "Manage activity types of " + this.BigData.event_name} )
   },
   
 }

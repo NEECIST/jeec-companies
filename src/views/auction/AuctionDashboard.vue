@@ -6,7 +6,7 @@
       <section-header-component
       :name="BigData.auction.name"
       :description="BigData.auction.description"
-      back_page="/dashboard"
+      back_page="/companies/dashboard"
       />
       <div class="row" style="margin: auto;width: 50%;">
         <div class="col s12 m12 l12 center">
@@ -195,13 +195,19 @@ export default {
     ...mapGetters(["StateUsername"]),
     // ...mapGetters(["AuctionExternalId"]),
     submit(){
-      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/auctiondashboard_vue/bid',{user: this.StateUsername(), auction_ex_id: this.this.$route.params.auction_external_id, bid_value: this.bid_value, is_anonymous: this.is_anon}).then(response => this.BigDataSubmit = response.data)
+      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/auctiondashboard_vue/bid',{user: this.StateUsername(), auction_ex_id: this.this.$route.params.auction_external_id, bid_value: this.bid_value, is_anonymous: this.is_anon},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response => this.BigDataSubmit = response.data)
       //axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/auctiondashboard_vue/bid',{user: this.StateUsername(), auction_ex_id: this.AuctionExternalId(), bid_value: this.bid_value, is_anonymous: this.is_anon}).then(response => this.BigDataSubmit = response.data)
     }
     
   },
   mounted(){
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/auctiondashboard_vue/:auction_external_id',{user: this.StateUsername(), auction_ex_id: this.$route.params.auction_external_id}).then(response=>{
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/auctiondashboard_vue/:auction_external_id',{user: this.StateUsername(), auction_ex_id: this.$route.params.auction_external_id},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response=>{
     this.BigData = response.data
     this.image = require("../../assets/" + this.BigData.highest_bidder_logo)
    

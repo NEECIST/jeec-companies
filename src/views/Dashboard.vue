@@ -11,7 +11,7 @@
         <img :src="image" class="company-logo-company-side centered-image">
 
         <div class="flexbox-btns">
-          <router-link router-link to="/activitiesdashboard">
+          <router-link router-link to="/companies/activitiesdashboard">
           <form  method="get">
             <button class="waves-effect blue lighten-2 btn-large dashboard-btn">Activities</button>
           </form>
@@ -44,7 +44,7 @@
         </div>
         <!-- @click="AuctionExternalIdSetter(auction.external_id)" -->
          <div v-show="BigData.food_manager == true">
-          <router-link router-link to="/mealsdashboard">
+          <router-link router-link to="/companies/mealsdashboard">
             <form action="/companies/meals" method="get">
               <button class="waves-effect red lighten-2 btn-large dashboard-btn"><i
                   class="large material-icons left">restaurant</i>Meals</button>
@@ -52,7 +52,7 @@
             </router-link>
          </div>
 
-         <router-link router-link to="/changepassword">
+         <router-link router-link to="/companies/changepassword">
             
             <button class="waves-effect red lighten-2 btn-large"><i
                 class="large material-icons left">account_box</i>Change password</button>
@@ -122,13 +122,20 @@ export default {
     },
   },
   mounted() {
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/dashboard_vue',{user: this.StateUsername()}).then(response => this.BigData = response.data)
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/dashboard_vue',{user: this.StateUsername()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response => this.BigData = response.data)
     axios({
           url: process.env.VUE_APP_JEEC_BRAIN_URL + '/company/image',
           method: 'POST',
           responseType: 'arraybuffer',
           data: {
             company: this.Company(),
+          },
+          auth: {
+            username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+            password: process.env.VUE_APP_JEEC_WEBSITE_KEY
           }
         }).then(response=>{
           if(response.data!=''){

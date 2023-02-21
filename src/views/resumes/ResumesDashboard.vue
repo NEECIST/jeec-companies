@@ -20,7 +20,7 @@
     <section-header-component
     name="Student's Resumes"
     description="Download student curriculums"
-    back_page="/dashboard"
+    back_page="/companies/dashboard"
     />
 
   <div class="flexbox-btns" style="justify-content: center; margin-top: 70px;">
@@ -142,6 +142,10 @@ methods:{
                     url: process.env.VUE_APP_JEEC_BRAIN_URL + '/resumes/download_vue',
                     method: 'GET',
                     responseType: 'arraybuffer',
+                    auth: {
+                      username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+                      password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+                    }
                 }).then(response=>this.forceFileDownload(response, 'curriculos_JEEC21.zip'))
     },
     forceFileDownload(response, title) {
@@ -159,6 +163,10 @@ methods:{
                     method: 'POST',
                     responseType: 'arraybuffer',
                     data: student_external_id,
+                    auth: {
+                      username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+                      password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+                    }
                 }).then(response=>this.forceFileDownload(response, filemane))
     },
 },
@@ -178,7 +186,10 @@ computed:{
 },
 mounted(){
   console.log(this.response_data)
-  axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/resumes/vue",{company:this.Company()}).then(response=>{
+  axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/resumes/vue",{company:this.Company()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response=>{
     this.response_data=response.data
   });
 }

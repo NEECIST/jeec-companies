@@ -5,7 +5,7 @@
     <section-header-component
     name="Statistics"
     description="Statistics from app usage"
-    back_page="/dashboard"
+    back_page="/companies/dashboard"
     />
     <div class="flexbox-btns" style="justify-content: center; margin-top: 90px;">
         <button @click="setGeneral" id="general_btn" class="waves-effect blue lighten-2 btn-large dashboard-btn" style="width: 250px;"><i
@@ -201,7 +201,10 @@ export default {
     },
   },
   mounted(){
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/statistics/vue',{company:this.Company()}).then(response => {
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/statistics/vue',{company:this.Company()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response => {
       this.response_data = response.data
     });
   }
