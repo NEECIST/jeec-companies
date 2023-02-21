@@ -17,7 +17,7 @@ async LogIn({commit},bad_form) {
     username: bad_form.username,
     password: bad_form.password
   }
-  const response = await axios.post(secrets.VUE_APP_JEEC_BRAIN_URL + '/login_vue', {username : form.username})
+  const response = await axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/login_vue', {username : form.username})
   console.log(response.data)
   if(response != ""){
     console.log(response.data.password)
