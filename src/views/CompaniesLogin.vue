@@ -56,13 +56,16 @@ export default {
     ...mapGetters(["isAuthenticated"]),
     ...mapGetters(["StateUsername"]),
     async CheckTerms(username){
-      await axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/terms_check_vue',{user: username}).then(response => this.check = response.data)
+      await axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/terms_check_vue',{user: username},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response => this.check = response.data)
           if(this.check.accepted_terms){
-            this.$router.push("/dashboard");
+            this.$router.push("/companies/dashboard");
             this.showError = false
           }
           else{
-            this.$router.push("/terms_conditions");
+            this.$router.push("/companies/terms_conditions");
           }
 
     },

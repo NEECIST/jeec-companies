@@ -18,17 +18,17 @@ Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
+    path: '/companies',
     name: 'companies-login',
     component: CompaniesLogin
   },
   {
-    path: '/dashboard',
+    path: '/companies/dashboard',
     name: 'dashboard-main',
     component: Dashboard
   },
   {
-    path: '/activitiesdashboard',
+    path: '/companies/activitiesdashboard',
     name: 'activities-dashboard',
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -36,33 +36,33 @@ const routes = [
     component: ActivitiesDashboard
   },
   {
-    path: '/activity',
+    path: '/companies/activity',
     name: 'activity-full-detail',
     component: Activity
   },
   {
-    path: '/activitytype',
+    path: '/companies/activitytype',
     name: 'activity-type',
     component: ActivityType
   },
   {
-    path: '/mealsdashboard',
+    path: '/companies/mealsdashboard',
     name: 'meals-dashboard',
     component: MealsDashboard
   },
   {
-    path: '/mealpage/:external_id',
+    path: '/companies/mealpage/:external_id',
     name: 'meal-page',
     component: MealPage
   },
   {
-    path: '/auctiondashboard',
+    path: '/companies/auctiondashboard',
     name: 'auction-dashboard',
     props:true,
     component: AuctionDashboard
   },
   {
-    path: '/jobfair',
+    path: '/companies/jobfair',
     name: 'job-fair',
     component: JobFair
   },
@@ -72,20 +72,21 @@ const routes = [
   //   component: StatisticsDashboard
   // },
   {
-    path: '/resumesdashboard',
+    path: '/companies/resumesdashboard',
     name: 'resumes-dashboard',
     component: ResumesDashboard
   },
   {
-    path: '/terms_conditions',
+    path: '/companies/terms_conditions',
     name: 'terms-conditions',
     component: TermsConditions
   },
   {
-    path: '/changepassword',
+    path: '/companies/changepassword',
     name: 'change-password',
     component: ChangePassword
   },
+  { path: "*", component: CompaniesLogin },
 ]
 
 const router = new VueRouter({

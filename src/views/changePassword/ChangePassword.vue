@@ -4,7 +4,7 @@
       <section-header-component
       name="Change password"
       description=""
-      back_page="/dashboard"
+      back_page="/companies/dashboard"
       />
 
       <p v-if="error!=''" class="login-error">{{ error }}</p>
@@ -67,7 +67,10 @@ export default {
               }
             else{
               let new_password = CryptoJS.DES.encrypt(this.new_password, process.env.VUE_APP_API_KEY).toString();
-                axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/changepassword",{username:this.StateUsername(),new_password:new_password}).then(response=>{
+                axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/changepassword",{username:this.StateUsername(),new_password:new_password},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response=>{
                     if(response.data!=''){
                         this.error = response.data
                         this.success = false
@@ -84,7 +87,10 @@ export default {
             }
     },
     mounted(){
-      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/getpassword",{username:this.StateUsername()}).then(response=>{
+      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/getpassword",{username:this.StateUsername()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response=>{
         let hashed = response.data
         this.real_password = CryptoJS.DES.decrypt(hashed, process.env.VUE_APP_API_KEY).toString(CryptoJS.enc.Utf8);
         console.log(this.real_password)

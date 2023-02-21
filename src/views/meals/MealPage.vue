@@ -5,7 +5,7 @@
     <section-header-component
     :name="response_data.meal.type + ' '+ response_data.meal.day"
     description="Choose your meal"
-    back_page="/mealsdashboard"
+    back_page="/companies/mealsdashboard"
     />
     <div class="section-title center-align" style="margin-top:50px;">
     List of foods
@@ -87,14 +87,20 @@ export default {
     ...mapGetters(["Company"]),
     sendQuantities(e){
       e.preventDefault()
-      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal/change',{meal_external_id: this.$route.params.external_id, company:this.Company(), dishes:this.response_data.dishes})
-      this.$router.push('/mealsdashboard')
+      axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal/change',{meal_external_id: this.$route.params.external_id, company:this.Company(), dishes:this.response_data.dishes},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }})
+      this.$router.push('/companies/mealsdashboard')
     },
 },
 
   mounted(){
     console.log(this.Company())
-    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal',{meal_external_id: this.$route.params.external_id, company:this.Company()}).then(response=>this.response_data=response.data)
+    axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal',{meal_external_id: this.$route.params.external_id, company:this.Company()},{auth: {
+    username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+    password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+  }}).then(response=>this.response_data=response.data)
   }
 }
 </script>
