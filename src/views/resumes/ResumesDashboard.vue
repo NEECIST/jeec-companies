@@ -185,7 +185,6 @@ computed:{
     }
 },
 mounted(){
-  console.log(this.response_data)
   axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + "/resumes/vue",{company:this.Company()},{auth: {
     username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
     password: process.env.VUE_APP_JEEC_WEBSITE_KEY

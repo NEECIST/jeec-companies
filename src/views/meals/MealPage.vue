@@ -96,7 +96,6 @@ export default {
 },
 
   mounted(){
-    console.log(this.Company())
     axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal',{meal_external_id: this.$route.params.external_id, company:this.Company()},{auth: {
     username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
     password: process.env.VUE_APP_JEEC_WEBSITE_KEY
