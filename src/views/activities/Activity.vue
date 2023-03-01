@@ -118,7 +118,6 @@ export default {
     ...mapGetters(["StateUsername"]),
     toggle () {
         this.fullscreen = !this.fullscreen
-        console.log(this.fullscreen)
       },
     onInit (promise) {
       promise

@@ -54,8 +54,8 @@
 
          <router-link router-link to="/companies/changepassword">
             
-            <button class="waves-effect red lighten-2 btn-large"><i
-                class="large material-icons left">account_box</i>Change password</button>
+            <button class="waves-effect red lighten-2 btn-large dashboard-btn"><i
+                class="large material-icons left">account_box</i>credentials</button>
           
           </router-link>
           
@@ -125,7 +125,9 @@ export default {
     axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/dashboard_vue',{user: this.StateUsername()},{auth: {
     username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
     password: process.env.VUE_APP_JEEC_WEBSITE_KEY
-  }}).then(response => this.BigData = response.data)
+  }}).then(response => {
+    this.BigData = response.data
+    })
     axios({
           url: process.env.VUE_APP_JEEC_BRAIN_URL + '/company/image',
           method: 'POST',
