@@ -20,7 +20,7 @@
             </div>
 
         
-                <p v-if="showError" class="login-error">error msg would appear here</p>
+                <p v-if="showError" class="login-error">Incorrect credentials</p>
 
                <button @click="submit" class="waves-effect blue lighten-2 btn-large login-button">Login</button>
 

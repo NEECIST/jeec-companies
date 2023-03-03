@@ -1,7 +1,9 @@
 <template>
   <div class="top-bar">
     <div class="nav-bar">
+      <a target="_blank" rel="noopener noreferrer" href="https://jeec.ist" method="get">
     <img class="jeec-logo-mobile" :src="jeec_logo">
+      </a>
 
     <div class="company-dash-username right" style="color:black; margin-top:10px">{{username}}</div>
 
@@ -10,11 +12,6 @@
       <button @click="logout"  class="waves-effect red lighten-2 btn-small right logout-btn" ><i class="material-icons left">lock</i>Log
         out</button>
     </router-link>
-
-    <a target="_blank" rel="noopener noreferrer" href="https://jeec.ist" method="get">
-      <button class="waves-effect waves-light btn-small right" style="margin-top:10px; margin-right: 50px;"><i
-          class="large material-icons left">web</i>Visit website</button>
-    </a>
     </div>
   </div>
 </template>

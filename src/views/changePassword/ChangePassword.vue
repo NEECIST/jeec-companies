@@ -93,7 +93,6 @@ export default {
   }}).then(response=>{
         let hashed = response.data
         this.real_password = CryptoJS.DES.decrypt(hashed, process.env.VUE_APP_API_KEY).toString(CryptoJS.enc.Utf8);
-        console.log(this.real_password)
       })
     }
 }

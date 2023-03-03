@@ -21,11 +21,8 @@ async LogIn({commit},bad_form) {
     username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
     password: process.env.VUE_APP_JEEC_WEBSITE_KEY
   }})
-  console.log(response.data)
   if(response != ""){
-    console.log(response.data.password)
     const password = CryptoJS.DES.decrypt(response.data.password, process.env.VUE_APP_API_KEY).toString(CryptoJS.enc.Utf8);
-    console.log(password)
     if (password.normalize() === form.password.normalize()){
       commit('setUser',form.username)
       commit('setCompany',response.data.company)

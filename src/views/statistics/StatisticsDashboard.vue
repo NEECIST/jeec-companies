@@ -164,18 +164,15 @@ export default {
             if (target_data) {
                 this.data[0].values = Object.values(target_data);
                 this.data[0].labels = Object.keys(target_data);
-                console.log(this.selected + " " + this.graph_type + " by " + this.mode);
                 this.layout.title = this.selected + " " + this.graph_type + " by " + this.mode;
                 Plotly.newPlot(this.data, this.layout);
             }
             else{
-                console.log("No data with"+ this.selected + " " + this.graph_type + " by " + this.mode);
                 this.layout.title = "No data for "+ this.selected + " " + this.graph_type + " by " + this.mode;
             }
 
         },
     graph_plot() {
-        console.log("Entered graph plot with mode: "+this.mode+" and graph_type: "+this.graph_type)
         if (this.graph_type === "interactions") {
             if (this.mode === "course") {
                 this.replot(this.response_data.interactions_by_course[this.selected]);
