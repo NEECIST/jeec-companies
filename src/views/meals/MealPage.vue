@@ -12,10 +12,10 @@
   </div>
 
   <div class="list">
-    <blockquote v-if="response_data.error" class="create-error">
-      {{ response_data.error }}
+    <blockquote v-if="error" class="create-error">
+      {{ error.error }}
     </blockquote>
-    <div v-else>
+    <div>
 
     <form id="dish_form" class="col s12" @submit="sendQuantities">
       <div v-if="response_data.max_dish_quantity" class="sub_section-title left-align" style="margin-bottom: 20px;">
@@ -42,7 +42,7 @@
             </td>
   
             <td>
-              <input type="number" min="0" v-model="dish.quantity" class="validate s2">
+              <input type="number" min="0" max="3" v-model="dish.quantity" class="validate s2">
             </td>
           </tr>
           <br>
@@ -78,7 +78,8 @@ export default {
         max_dish_quantity:0,
         dish_types:[],
         dishes:[]
-      }
+      },
+      error: ""
     }
   },
   methods:{
@@ -90,8 +91,12 @@ export default {
       axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/mealsdashboard/meal/change',{meal_external_id: this.$route.params.external_id, company:this.Company(), dishes:this.response_data.dishes},{auth: {
     username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
     password: process.env.VUE_APP_JEEC_WEBSITE_KEY
-  }})
+  }}).then(response=>{this.error=response.data;
+    if(this.error == ""){
       this.$router.push('/companies/mealsdashboard')
+    }
+  }) 
+      
     },
 },
 
