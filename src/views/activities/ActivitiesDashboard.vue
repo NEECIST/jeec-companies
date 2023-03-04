@@ -78,8 +78,8 @@
     
                 <td>
                   <router-link :to="{name: 'activity-full-detail', params: {activity_external_id : activity.activity_ex_id}}">
-                    <button title="Activity Info" class="waves-effect waves-light btn-floating"><i
-                        class="material-icons left">search</i>Info </button>
+                    <button title="Scan QR Code" class="waves-effect waves-light btn-floating"><i
+                        class="material-icons left">qr_code</i>Info </button>
                   </router-link>
                 </td>
               </tr>

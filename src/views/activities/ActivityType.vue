@@ -90,12 +90,12 @@ export default {
 
       start_date =
         start_date.getFullYear().toString() +
-        (start_date.getMonth() + 1 < 10
-          ? "0" + (start_date.getMonth() + 1).toString()
-          : (start_date.getMonth() + 1).toString()) +
         (start_date.getDate() < 10
           ? "0" + (start_date.getDate()).toString()
           : (start_date.getDate()).toString()) +
+        (start_date.getMonth()+1 < 10
+          ? "0" + (start_date.getMonth()+1).toString()
+          : (start_date.getMonth()+1).toString()) +
         "T" +
         (start_date.getHours() < 10
           ? "0" + start_date.getHours()
@@ -107,12 +107,12 @@ export default {
 
       end_date =
         end_date.getFullYear().toString() +
-        (end_date.getMonth() + 1 < 10
-          ? "0" + (end_date.getMonth() + 1).toString()
-          : (end_date.getMonth() + 1).toString()) +
         (end_date.getDate() < 10
           ? "0" + (end_date.getDate()).toString()
           : (end_date.getDate()).toString()) +
+        (end_date.getMonth()+1 < 10
+          ? "0" + (end_date.getMonth()+1).toString()
+          : (end_date.getMonth()+1).toString()) +
         "T" +
         (end_date.getHours() < 10
           ? "0" + end_date.getHours()
