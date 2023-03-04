@@ -4,7 +4,7 @@
     <top-bar :username="BigData.username"/>
     <div v-if="BigData.valid">
       <section-header-component
-      name="Activity Types Management"
+      name="Check Activities"
       :description="desc"  
       back_page='/companies/dashboard'
       />
@@ -33,9 +33,9 @@
     </div>
     <div v-else>
       <section-header-component
-      name="Error"
+      name="No activities of this Activity Type"
       :description="BigData.error"
-      back_page="companies/dashboard"
+      back_page="/companies/dashboard"
       />
     </div>
 
@@ -157,7 +157,7 @@ export default {
     axios.post(process.env.VUE_APP_JEEC_BRAIN_URL + '/activitiesdashboard_vue/activity_type',{user: this.StateUsername(), activity_type_external_id: this.$route.params.activity_type_external_id},{auth: {
     username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
     password: process.env.VUE_APP_JEEC_WEBSITE_KEY
-  }}).then(response =>{ this.BigData = response.data,this.desc = "Manage activity types of " + this.BigData.event_name} )
+  }}).then(response =>{ this.BigData = response.data,this.desc = "Check activity types of " + this.BigData.event_name;console.log(this.isAuthenticated())} )
   },
   
 }
@@ -168,7 +168,7 @@ export default {
 
 .activity-time {
     margin-top: 60px;
-    font-size: 30px !important;
+    font-size: 24px !important;
 }
 
 .activity-description {
@@ -177,20 +177,21 @@ export default {
 }
 
 .activity-name {
-    font-size: 40px !important;
+    font-size: 36px !important;
     font-weight: 500;
 }
 .flex-container{
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: stretch;
-  
+  align-items: stretch;  
 }
 .item{
- background-color:  rgb(240,240,240);
- padding:1%;
- border-radius:10%
+ background-color:  rgba(26, 156, 216, 0.3);
+ padding: 3%;
+ border-radius:35px;
+ width: 40vw;
+ margin: 3vh;
 }
 .left-arrow,
 .right-arrow {
