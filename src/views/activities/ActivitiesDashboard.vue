@@ -25,17 +25,24 @@
           <table class="striped" style="width:95%; margin-left:auto; margin-right:auto" >
             <thead>
               <tr>
+                <th>Read QR</th>
                 <th>Name</th>
                 <th>Type</th>
                 <th>Description</th>
                 <th>Day</th>
                 <th>Time</th>
                 <th>Location</th>
-                <th></th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="activity in BigData.activities" :key="activity.name">
+                <td>
+                  <router-link :to="{name: 'activity-full-detail', params: {activity_external_id : activity.activity_ex_id}}">
+                    <button title="Scan QR Code" class="waves-effect waves-light btn-floating"><i
+                        class="material-icons left">qr_code</i>Info </button>
+                  </router-link>
+                </td>
+                
                 <td><b>{{ activity.name }} </b></td>
     
                 <td>
@@ -74,13 +81,6 @@
                 </td>
                 <td v-else>
                   No Location Specified
-                </td>
-    
-                <td>
-                  <router-link :to="{name: 'activity-full-detail', params: {activity_external_id : activity.activity_ex_id}}">
-                    <button title="Scan QR Code" class="waves-effect waves-light btn-floating"><i
-                        class="material-icons left">qr_code</i>Info </button>
-                  </router-link>
                 </td>
               </tr>
             </tbody>
