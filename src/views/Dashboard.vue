@@ -59,12 +59,14 @@
           
           </router-link>
           
-          <div v-show="BigData.cvs_enabled == true">
-            <form method="get">
+          <!-- <router-link to="/companies/resumesdashboard" v-show="BigData.cvs_enabled == true">
               <button class="waves-effect red lighten-2 btn-large dashboard-btn" style="width: auto;">
                   <i class="large material-icons left">person_outline</i>Students & CV's</button>
-            </form>
-          </div>
+          </router-link> -->
+
+          <button v-if="BigData.cvs_enabled == true" class="waves-effect red lighten-2 btn-large dashboard-btn" style="width: auto;"
+            @click="downloadAll"><i class="material-icons left">file_download</i>Download CVs</button>
+
             <!-- <router-link to="/statisticsdashboard">
             <form method="get">
               <button class="waves-effect red lighten-2 btn-large dashboard-btn" style="width: auto;"><i class="large material-icons left">assessment</i>App Statistics</button>
@@ -119,6 +121,25 @@ export default {
     ...mapGetters(["Company"]),
     forceFileDownload(response) {
       this.image = URL.createObjectURL(new Blob([response.data]))
+    },
+    downloadAll(){
+      axios({
+          url: process.env.VUE_APP_JEEC_BRAIN_URL + '/resumes/download_vue',
+          method: 'GET',
+          responseType: 'arraybuffer',
+          auth: {
+            username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
+            password: process.env.VUE_APP_JEEC_WEBSITE_KEY
+          }
+      }).then(response=>this.forceFileDownloadAllCVs(response, 'curriculos_JEEC24.zip'))
+    },
+    forceFileDownloadAllCVs(response, title) {
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', title)
+      document.body.appendChild(link)
+      link.click()
     },
   },
   mounted() {

@@ -39,7 +39,7 @@
 
   <p
     style="text-align: center; margin: 0; margin-top: 2vh; margin-bottom: 30px; font-size: 20px; font-weight: 700; color: red;">
-    Be aware, students resumes submission closes on the 2nd April</p>
+    Be aware, students resumes submission hasn't closed yet</p>
 </div>
 
   <div id="all">
@@ -146,7 +146,7 @@ methods:{
                       username: process.env.VUE_APP_JEEC_WEBSITE_USERNAME, 
                       password: process.env.VUE_APP_JEEC_WEBSITE_KEY
                     }
-                }).then(response=>this.forceFileDownload(response, 'curriculos_JEEC21.zip'))
+                }).then(response=>this.forceFileDownload(response, 'curriculos_JEEC24.zip'))
     },
     forceFileDownload(response, title) {
       const url = window.URL.createObjectURL(new Blob([response.data]))
